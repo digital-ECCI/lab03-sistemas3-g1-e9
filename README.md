@@ -22,42 +22,25 @@ Sebastián organista -10953333
 
 
 ## Preguntas
-
 1. ¿Qué función cumple ```plt.fignum_exists(self.fig.number)``` en el ciclo principal?
 
-<<<<<<< HEAD
-Esta función verifica si la ventana de la gráfica aun existe y está abierta. Si el usuario cierra manualmente la ventana de matplotlib, plt.fignum_exists() retorna False, lo que hace que el ciclo while termine y el programa finalice correctamente, evitando errores al intentar graficar en una ventana que ya no existe.
+Esta función verifica si la ventana de la gráfica aún existe y está abierta. Si el usuario cierra manualmente la ventana de matplotlib, plt.fignum_exists() retorna False, lo que hace que el ciclo while termine y el programa finalice correctamente, evitando errores al intentar graficar en una ventana que ya no existe.
 
-2. ¿Por qué se usa ```time.sleep(self.intervalo)``` y qué pasa si se quita?
-=======
-R/ Permite que el programa siga ejecutándose solo mientras la ventana de la gráfica esté abierta.
 
-2. ¿Por qué se usa ```time.sleep(self.intervalo)``` y qué pasa si se quita
-
-R/ detiene el programa durante un tiempo determinado esto nos ayuda a tener un mayo control del sispositivo como por ejemplo la medicon de la temperatura, tambiaen Evitar que el ciclo se ejecute demasiado rápido es decir reducir el uso del CPU.
-
->>>>>>> 57d36a432179c6622fe9a57f54191abb7c57a127
+2. ¿Por qué se usa ```time.sleep(self.intervalo)``` y qué pasa si se quita? 
 
 time.sleep(self.intervalo) controla la frecuencia de muestreo, estableciendo un intervalo fijo (0.5 segundos) entre mediciones. Si se quita:
-
-*El programa tomaría mediciones lo más rápido posible, saturando el sensor y el procesador
-*La gráfica se actualizaría constantemente, consumiendo muchos recursos
-*Se perdería la relación temporal deseada entre mediciones
-*Podría causar interferencias en las lecturas del sensor ultrasónico
+El programa tomaría mediciones lo más rápido posible, saturando el sensor y el procesador
+La gráfica se actualizaría constantemente, consumiendo muchos recursos
+Se perdería la relación temporal deseada entre mediciones
+Podría causar interferencias en las lecturas del sensor ultrasónico
 
 3. ¿Qué ventaja tiene usar ```__init__``` para inicializar listas y variables?
 
-<<<<<<< HEAD
-Ventajas de inicializar en __init__:
-
 Encapsulación: Todas las variables de estado están claramente definidas desde el inicio
-
 Consistencia: El objeto siempre se crea en un estado válido y predecible
-
 Reusabilidad: Permite crear múltiples instancias independientes del monitor
-
 Mantenibilidad: Centraliza la configuración inicial, facilitando modificaciones
-
 Legibilidad: Define claramente qué variables pertenecen al estado del objeto
 
 4. ¿Qué se está midiendo con ```self.inicio = time.time()```?
@@ -66,15 +49,11 @@ self.inicio captura el timestamp absoluto del momento en que comienza la ejecuci
 
 5. ¿Qué hace exactamente ```subprocess.check_output(...)```?
 
-
 Ejecutar comandos del sistema operativo y capturar su salida
-En un contexto de sensores, podría usarse para leer datos de sensores conectados por I2C o para ejecutar comandos como vcgencmd para medir temperatura de la CPU
-
+En un contexto de sensores, podría usarse para leer vcgencmd para medir temperatura de la CPU
 Captura la salida estándar del comando y la retorna como bytes
 
 6. ¿Por qué se almacena ```ahora = time.time() - self.inicio``` en lugar del tiempo absoluto?
-
-Se usa tiempo relativo porque:
 
 El eje X comienza en 0, mostrando claramente la duración del monitoreo
 No importa a qué hora se inició, la gráfica muestra el tiempo transcurrido
@@ -83,17 +62,17 @@ Facilita comparar diferentes sesiones de monitoreo
 
 7. ¿Por qué se usa ```self.ax.clear()``` antes de graficar?
 
-self.ax.clear() limpia completamente el eje antes de redibujar para:
-Sin clear(), los nuevos gráficos se dibujarían sobre los anteriores
+Evitar superposición: Sin clear(), los nuevos gráficos se dibujarían sobre los anteriores
+Tambien elimina los elementos gráficos antiguos
 Asegura que todos los elementos (títulos, etiquetas, leyendas) se refresquen correctamente
 Es más eficiente limpiar y redibujar que modificar elementos existentes
 
 8. ¿Qué captura el bloque ```try...except``` dentro de ```leer_temperatura()```?
 
-Cuando el sensor no responde dentro del tiempo esperado
-Problemas con los pines, interferencias eléctricas
-Posibles divisiones por cero o valores inválidos
-Previene que el programa completo se detenga por un error de medición aislado
+Errores de timeout: Cuando el sensor no responde dentro del tiempo esperado
+Excepciones de GPIO: Problemas con los pines, interferencias eléctricas
+Errores de cálculo: Posibles divisiones por cero o valores inválidos
+Cualquier excepción general: Previene que el programa completo se detenga por un error de medición aislado
 
 9. ¿Cómo podría modificar el script para guardar las temperaturas en un archivo .```csv```?
 
@@ -103,11 +82,12 @@ import os
 
 class MonitorUltrasonicoRPI:
     def __init__(self, duracion_max=60, intervalo=0.5, archivo_csv="mediciones.csv"):
-        
+        # ... código existente ...
         self.archivo_csv = archivo_csv
         self._inicializar_archivo_csv()
     
     def _inicializar_archivo_csv(self):
+        """Inicializa el archivo CSV con encabezados si no existe"""
         archivo_nuevo = not os.path.exists(self.archivo_csv)
         with open(self.archivo_csv, mode='a', newline='') as file:
             writer = csv.writer(file)
@@ -115,6 +95,7 @@ class MonitorUltrasonicoRPI:
                 writer.writerow(['Tiempo (s)', 'Distancia (cm)', 'Timestamp'])
     
     def guardar_medicion_csv(self, tiempo, distancia):
+        """Guarda una medición en el archivo CSV"""
         try:
             with open(self.archivo_csv, mode='a', newline='') as file:
                 writer = csv.writer(file)
@@ -124,6 +105,7 @@ class MonitorUltrasonicoRPI:
             print(f"Error al guardar en CSV: {e}")
     
     def actualizar_datos(self):
+        # ... código existente ...
         ahora = time.time() - self.inicio
         distancia = self.medir_distancia()
         
@@ -136,7 +118,6 @@ class MonitorUltrasonicoRPI:
             print(f"  Tiempo: {ahora:5.1f}s | Fuera de rango/Error")
     
     def _limpiar_recursos(self):
+        # ... código existente ...
         print(f"\n Mediciones guardadas en: {self.archivo_csv}")
-
-
 
