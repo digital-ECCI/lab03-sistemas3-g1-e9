@@ -1,3 +1,4 @@
+## Codigo para medir con el sensor HC-SR04
 import matplotlib.pyplot as plt
 import time
 import subprocess
