@@ -4,17 +4,16 @@
 
 ## Integrantes
 
-<<<<<<< HEAD
 Grupo 9
 Juan Sebastian Organista
 Yesid Fabian Alfonso
 Edwar Raul Carrero
-=======
+
 Yesid Fabián Alfonso Pérez - 987081,
 Edwar Raúl Carrero Ayala - 64325202,
 Sebastián organista -10953333
 
->>>>>>> 57d36a432179c6622fe9a57f54191abb7c57a127
+
 
 
 ## Documentación
