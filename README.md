@@ -4,113 +4,140 @@
 
 ## Integrantes
 
+<<<<<<< HEAD
+Grupo 9
+Juan Sebastian Organista
+Yesid Fabian Alfonso
+Edwar Raul Carrero
+=======
 Yesid Fabián Alfonso Pérez - 987081,
 Edwar Raúl Carrero Ayala - 64325202,
 Sebastián organista -10953333
 
+>>>>>>> 57d36a432179c6622fe9a57f54191abb7c57a127
 
 
 ## Documentación
 
-Realizar la medición de temperatura del sistema.
 
-Inicio
-  │
-  ▼
-Guardar tiempo inicial
-  │
-  ▼
-Leer temperatura del sistema
-  │
-  ▼
-Calcular tiempo transcurrido
-  │
-  ▼
-Guardar datos
-  │
-  ▼
-Actualizar gráfica
-  │
-  ▼
-¿Ventana abierta?
-  │
-  ├─ Sí → repetir proceso
-  │
-  └─ No → finalizar programa
+
 
 ## Preguntas
 
 1. ¿Qué función cumple ```plt.fignum_exists(self.fig.number)``` en el ciclo principal?
 
+<<<<<<< HEAD
+Esta función verifica si la ventana de la gráfica aun existe y está abierta. Si el usuario cierra manualmente la ventana de matplotlib, plt.fignum_exists() retorna False, lo que hace que el ciclo while termine y el programa finalice correctamente, evitando errores al intentar graficar en una ventana que ya no existe.
+
+2. ¿Por qué se usa ```time.sleep(self.intervalo)``` y qué pasa si se quita?
+=======
 R/ Permite que el programa siga ejecutándose solo mientras la ventana de la gráfica esté abierta.
 
 2. ¿Por qué se usa ```time.sleep(self.intervalo)``` y qué pasa si se quita
 
 R/ detiene el programa durante un tiempo determinado esto nos ayuda a tener un mayo control del sispositivo como por ejemplo la medicon de la temperatura, tambiaen Evitar que el ciclo se ejecute demasiado rápido es decir reducir el uso del CPU.
 
+>>>>>>> 57d36a432179c6622fe9a57f54191abb7c57a127
+
+time.sleep(self.intervalo) controla la frecuencia de muestreo, estableciendo un intervalo fijo (0.5 segundos) entre mediciones. Si se quita:
+
+*El programa tomaría mediciones lo más rápido posible, saturando el sensor y el procesador
+*La gráfica se actualizaría constantemente, consumiendo muchos recursos
+*Se perdería la relación temporal deseada entre mediciones
+*Podría causar interferencias en las lecturas del sensor ultrasónico
 
 3. ¿Qué ventaja tiene usar ```__init__``` para inicializar listas y variables?
 
-R/ es el constructor de la clase permitiendo inicializar todas las variables cuando se crea el objeto, tambien permite organizar mejor el código.
+<<<<<<< HEAD
+Ventajas de inicializar en __init__:
 
-Evita errores por variables no definida permitiendo reutilizar la clase fácilmente por ejemplo de lo que se inicializa normalmente:
+Encapsulación: Todas las variables de estado están claramente definidas desde el inicio
 
-listas de tiempo
+Consistencia: El objeto siempre se crea en un estado válido y predecible
 
-listas de temperatura
+Reusabilidad: Permite crear múltiples instancias independientes del monitor
 
-configuración de la gráfica
+Mantenibilidad: Centraliza la configuración inicial, facilitando modificaciones
 
-intervalo de medición
-
-en resumen sirve para prepara el objeto antes de que empiece a funcionar el programa.
+Legibilidad: Define claramente qué variables pertenecen al estado del objeto
 
 4. ¿Qué se está midiendo con ```self.inicio = time.time()```?
 
-R/ devuelve el tiempo actual del sistema en segundos, por ejemplo se está guardando el momento exacto en que empieza el programa.Luego se usa para calcular cuánto tiempo ha pasado desde el inicio.
+self.inicio captura el timestamp absoluto del momento en que comienza la ejecución del monitor. Luego se usa para calcular el tiempo relativo transcurrido (ahora = time.time() - self.inicio), permitiendo que el eje X de la gráfica muestre cuántos segundos han pasado desde el inicio, independientemente de la hora real del sistema.
 
 5. ¿Qué hace exactamente ```subprocess.check_output(...)```?
 
-R/ ejecuta un comando del sistema operativo desde Python. Ejecuta el comando del sistema. Captura lo que el comando devuelve y lo entrega a Python como texto. En este caso se usa para leer la temperatura del CPU de la Raspberry Pi.
+
+Ejecutar comandos del sistema operativo y capturar su salida
+En un contexto de sensores, podría usarse para leer datos de sensores conectados por I2C o para ejecutar comandos como vcgencmd para medir temperatura de la CPU
+
+Captura la salida estándar del comando y la retorna como bytes
 
 6. ¿Por qué se almacena ```ahora = time.time() - self.inicio``` en lugar del tiempo absoluto?
 
-R/  Porque se quiere medir el tiempo transcurrido desde que empezó el programa.
+Se usa tiempo relativo porque:
+
+El eje X comienza en 0, mostrando claramente la duración del monitoreo
+No importa a qué hora se inició, la gráfica muestra el tiempo transcurrido
+Los valores son más pequeños y manejables para la escala de la gráfica
+Facilita comparar diferentes sesiones de monitoreo
 
 7. ¿Por qué se usa ```self.ax.clear()``` antes de graficar?
 
-R/ borra la gráfica anterior ya que esto es necesario porque el programa está actualizando la gráfica continuamente, si no se usara las líneas se dibujarían encima unas de otras y la gráfica se volvería confusa y saturada.
-
-Con clear():
-
-Se limpia el gráfico.
-
-Se dibuja la nueva actualización.
-
-[Inicio]
-     │
-     ▼
-[Guardar tiempo inicial
- inicio = time.time()]
-     │
-     ▼
-[Ejecutar ciclo del programa]
-     │
-     ▼
-[Leer tiempo actual
- time.time()]
-     │
-     ▼
-[Calcular tiempo transcurrido
- ahora = tiempo_actual - inicio]
-     │
-     ▼
-[Usar tiempo en gráfica o datos]
+self.ax.clear() limpia completamente el eje antes de redibujar para:
+Sin clear(), los nuevos gráficos se dibujarían sobre los anteriores
+Asegura que todos los elementos (títulos, etiquetas, leyendas) se refresquen correctamente
+Es más eficiente limpiar y redibujar que modificar elementos existentes
 
 8. ¿Qué captura el bloque ```try...except``` dentro de ```leer_temperatura()```?
 
-R/ El bloque try...except captura errores al leer la temperatura puesto a que el comando del sistema falla. No se encuentra el sensor lo que ocasiona problemas de permisos, error al convertir el dato.
+Cuando el sensor no responde dentro del tiempo esperado
+Problemas con los pines, interferencias eléctricas
+Posibles divisiones por cero o valores inválidos
+Previene que el programa completo se detenga por un error de medición aislado
 
 9. ¿Cómo podría modificar el script para guardar las temperaturas en un archivo .```csv```?
 
-R/ Se puede usar el módulo csv se ejecutaría cada vez que se mida la temperatura dentro del ciclo. Si se quisiera obtener una grafica que guarde los datos en CSV automáticamente esto se podria lograr para Raspberry Pi o Linux.
+python
+import csv
+import os
+
+class MonitorUltrasonicoRPI:
+    def __init__(self, duracion_max=60, intervalo=0.5, archivo_csv="mediciones.csv"):
+        
+        self.archivo_csv = archivo_csv
+        self._inicializar_archivo_csv()
+    
+    def _inicializar_archivo_csv(self):
+        archivo_nuevo = not os.path.exists(self.archivo_csv)
+        with open(self.archivo_csv, mode='a', newline='') as file:
+            writer = csv.writer(file)
+            if archivo_nuevo:
+                writer.writerow(['Tiempo (s)', 'Distancia (cm)', 'Timestamp'])
+    
+    def guardar_medicion_csv(self, tiempo, distancia):
+        try:
+            with open(self.archivo_csv, mode='a', newline='') as file:
+                writer = csv.writer(file)
+                timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
+                writer.writerow([tiempo, distancia, timestamp])
+        except Exception as e:
+            print(f"Error al guardar en CSV: {e}")
+    
+    def actualizar_datos(self):
+        ahora = time.time() - self.inicio
+        distancia = self.medir_distancia()
+        
+        if distancia is not None:
+            self.tiempos.append(ahora)
+            self.distancias.append(distancia)
+            self.guardar_medicion_csv(ahora, distancia)  # Nueva línea
+            print(f" Tiempo: {ahora:5.1f}s | Distancia: {distancia:6.2f} cm")
+        else:
+            print(f"  Tiempo: {ahora:5.1f}s | Fuera de rango/Error")
+    
+    def _limpiar_recursos(self):
+        print(f"\n Mediciones guardadas en: {self.archivo_csv}")
+
+
+
