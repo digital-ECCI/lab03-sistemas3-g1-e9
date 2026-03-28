@@ -18,6 +18,7 @@ Sebastián organista -10953333
 
 ## Documentación
 
+<img width="269" height="521" alt="image" src="https://github.com/user-attachments/assets/66b00ba7-f1fb-47c4-90d2-7069654ecfca" />
 
 
 
