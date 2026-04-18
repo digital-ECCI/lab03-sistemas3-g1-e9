@@ -6,8 +6,14 @@
 
 Grupo 9
 Juan Sebastian Organista
+
+
 Yesid Fabian Alfonso
+
+
 Edwar Raul Carrero
+
+
 
 Yesid Fabián Alfonso Pérez - 987081,
 Edwar Raúl Carrero Ayala - 64325202,
